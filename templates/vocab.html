@@ -84,31 +84,71 @@
     <label for="attempt">Word:</label>
     <input id="attempt" name="attempt" type="text" width="15"
       autocomplete="off"  autofocus />
-    <input type="submit" name="try" />
   </form>
 </div></div>
 
 <br />
 
-{% if session.matches|length is not equalto 0  %}
-<h2>You found </h2>
-<p id="results">
-  {% for match in session.matches %}
-  {{ match }} 
-  {% endfor %}
-</p>
-{% endif %}
+<p id="error" class="message"></p>
+
+<h2>You Found </h2>
+<p id="results"> </p>
+
+<!-- Start the script -->
+<script>
+
+	//Set up the variables
+	var correct_count = 0;
+	var target_count = {{ session.target_count }};
+	var jumble = "{{ session.jumble }}"; 
+	var correct_list = [ ] ;
+	
+	// Suppress normal form submission ie. don't allow the use of enter
+	$("#entry").submit( function(event) {
+		event.preventDefault();
+	});
+	
+	//Listen for when the key comes up from the attempt entry field
+	$("#attempt").keyup(function() {
+		var txt = $("#attempt").val(); //get entered text
+		
+		//if we have already found the word return
+		if (correct_list.indexOf(txt) != -1) {
+			
+			//user found the word already print a message and return
+			$("#error").html("You already found " + txt + "!");
+			return;
+	   }
+		
+		//Start the json request
+		$.getJSON("/_check", { text: txt, jumble: jumble },
+				function(data) {
+					//get the result value
+					var rsvl = data.result.isAMatch;
+					console.log("rsval: " + rsvl);
+					
+					//handle true value
+					if(rsvl){
+						$("#error").html("");
+						$("#results").append(txt + " ");
+						correct_list.push(txt);
+						correct_count++;
+						//once a word is found clear out the attempt form
+						$("#attempt").val("");
+						
+						//if we found enough words progress to success page
+						if (correct_count >= target_count)
+						{
+							window.location.replace("success");
+						}
+					
+					}
+				}
+				);//end getJSON
+		});//end keyup
 
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <!-- Mismatch, already found, etc. "flashed" from Python -->
-    {% for message in messages %}
-      <p class="message">{{ message }}</p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
+</script>
 
 
  </div> <!-- container -->
