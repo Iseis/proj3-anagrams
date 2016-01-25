@@ -1,3 +1,7 @@
+## Student and file path
+Andrew Owens
+path on ix: andrewo@ix-trusty: ~/public_html/cis399/htbin/proj3-anagrams
+
 # proj3-anagrams
 Vocabularly anagrams game for primary school English language learners (ELL)
 
@@ -13,28 +17,6 @@ jumble.  When a matching word is typed, it is added to a list of solved words.
 The vocabulary word list is fixed for one invocation of the server, so multiple
 students connected to the same server will see the same vocabulary list but may 
 have different anagrams.
-
-## Authors 
-
-Initial version by M Young; to be revised by CIS 399se students. 
-
-## Status
-
-This is the 'skeleton' version for a CIS 322 project.  It uses conventional 
-interaction through a form, interacting only when the user submits the form. 
-Assignment is to replace the interaction with AJAX interaction on each 
-keystroke. 
-
-## Minijax? 
-
-flask_minijax.py and templates/minijax.html are a tiny example of using JQuery 
-with flask for an Ajax application.  (To be deleted in revised version of the project. 
-
-
-## To run automated tests 
-* `nosetests`
-
-There are currently nose tests for vocab.py, letterbag.py, and jumble.py. 
 
 
 
